@@ -1,0 +1,5 @@
+.dockerignore
+compose.yml
+Dockerfile*
+
+.env.example
