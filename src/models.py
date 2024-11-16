@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Decimal, Table, Index, Enum, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Float, Table, Index, Enum, Boolean
 from sqlalchemy.orm import relationship, declarative_base
 
 
@@ -38,10 +38,10 @@ class Movie(Base):
     title = Column(String(100), nullable=False)
     description = Column(Text)
     release_year = Column(Integer)
-    rental_rate = Column(Decimal(4, 2), nullable=False)
+    rental_rate = Column(Float, nullable=False)
     duration_mins = Column(Integer)
     genre = Column(String(50))
-    rating = Column(Decimal(4, 2), default=0.0)
+    rating = Column(Float, default=0.0)
     director = Column(String(80), nullable=False)
     image = Column(String, nullable=False)
     total_copies = Column(Integer, nullable=False)
@@ -94,7 +94,7 @@ class Payment(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     rental_id = Column(Integer, ForeignKey('rentals.id'), nullable=False)
-    amount = Column(Decimal(6, 2), nullable=False)
+    amount = Column(Float, nullable=False)
     payment_date = Column(DateTime, default=datetime.now)
     payment_method = Column(Enum('cash', 'credit_card', 'debit_card', name='payment_method_enum'))
 
@@ -110,7 +110,7 @@ class LateFee(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     rental_id = Column(Integer, ForeignKey('rentals.id'), nullable=False)
-    fee_amount = Column(Decimal(6, 2), nullable=False)
+    fee_amount = Column(Float, nullable=False)
     days_late = Column(Integer, nullable=False)
     paid = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.now)
@@ -133,4 +133,19 @@ class Category(Base):
 
     def __repr__(self):
         return f"<Category {self.name}>"
+    
+
+class Staff(Base):
+    __tablename__ = 'staffs'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(100), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    phone = Column(String(20))
+    password_hash = Column(String(255), nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
+    last_login = Column(DateTime)
+
+    def __repr__(self):
+        return f"<Staff {self.username}>"
     
