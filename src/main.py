@@ -1,5 +1,5 @@
 import tkinter as tk
-from auth import AuthenticationApp
+from app import MainApplication
 from config import engine, Session
 from models import Base
 
@@ -18,7 +18,7 @@ def main():
     session = Session()
 
     root = tk.Tk()
-    app = AuthenticationApp(root, session)
+    app = MainApplication(root, session)
     root.mainloop()
 
     session.close()

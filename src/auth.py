@@ -5,13 +5,15 @@ from datetime import datetime
 import bcrypt
 import re
 
-class AuthenticationApp:
-    def __init__(self, root, session):
+class AuthenticationFrame:
+    def __init__(self, root, session, login_callback):
         self.root = root
         self.root.geometry("400x500")
         self.root.resizable(False, False)
 
         self.session = session
+
+        self.login_callback = login_callback
         
         self.create_login_frame()
     
@@ -184,8 +186,8 @@ class AuthenticationApp:
             self.session.commit()
             
             messagebox.showinfo("Success", "Login successful!")
-            # Here you would typically launch the main application window
-            # self.launch_main_application(staff)
+            
+            self.login_callback(staff)
         else:
             messagebox.showerror("Error", "Invalid username or password!")
 
