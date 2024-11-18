@@ -8,7 +8,6 @@ import re
 class AuthenticationApp:
     def __init__(self, root, session):
         self.root = root
-        self.root.title("Movie Rental System - Login")
         self.root.geometry("400x500")
         self.root.resizable(False, False)
 
@@ -17,6 +16,8 @@ class AuthenticationApp:
         self.create_login_frame()
     
     def create_login_frame(self):
+        self.root.title("Movie Rental System - Staff Login")
+
         # Main Frame
         self.main_frame = ttk.Frame(self.root, padding="20")
         self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -54,6 +55,8 @@ class AuthenticationApp:
         self.main_frame.columnconfigure(0, weight=1)
         
     def create_register_frame(self):
+        self.root.title("Movie Rental System - Register New Staff")
+
         # Clear main frame
         for widget in self.main_frame.winfo_children():
             widget.destroy()
