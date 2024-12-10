@@ -5,10 +5,9 @@ from models import Base
 
 
 def main():
-    # Test the database connection
     try:
         with engine.connect() as connection:
-            print("Database connection successful!")
+            print("Database connection successful!", connection)
     except Exception as e:
         print(f"Error connecting to database: {e}")
 
@@ -18,7 +17,7 @@ def main():
     session = Session()
 
     root = tk.Tk()
-    app = MainApplication(root, session)
+    MainApplication(root, session)
     root.mainloop()
 
     session.close()

@@ -36,12 +36,12 @@ class MainApplication:
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
         
-        # File Menu
-        file_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="File", menu=file_menu)
-        file_menu.add_command(label="Logout", command=self.logout)
-        file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.root.quit)
+        # Action Menu
+        action_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Action", menu=action_menu)
+        action_menu.add_command(label="Logout", command=self.logout)
+        action_menu.add_separator()
+        action_menu.add_command(label="Exit", command=self.root.quit)
         
         # Management Menu
         management_menu = tk.Menu(menubar, tearoff=0)

@@ -13,6 +13,21 @@ movie_categories = Table(
 )
 
 
+class Staff(Base):
+    __tablename__ = 'staffs'
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(100), nullable=False)
+    email = Column(String(100), unique=True, nullable=False)
+    phone = Column(String(20))
+    password_hash = Column(String(255), nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
+    last_login = Column(DateTime)
+
+    def __repr__(self):
+        return f"<Staff {self.username}>"
+
+
 class Customer(Base):
     __tablename__ = 'customers'
 
@@ -60,6 +75,19 @@ class Movie(Base):
         return f"<Movie {self.title}>"
 
 
+class Category(Base):
+    __tablename__ = 'categories'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(50), unique=True, nullable=False)
+
+    # Relationships
+    movies = relationship("Movie", secondary=movie_categories, back_populates="categories")
+
+    def __repr__(self):
+        return f"<Category {self.name}>"
+
+
 class Rental(Base):
     __tablename__ = 'rentals'
 
@@ -96,7 +124,7 @@ class Payment(Base):
     rental_id = Column(Integer, ForeignKey('rentals.id'), nullable=False)
     amount = Column(Float, nullable=False)
     payment_date = Column(DateTime, default=datetime.now)
-    payment_method = Column(Enum('cash', 'credit_card', 'debit_card', name='payment_method_enum'))
+    payment_method = Column(Enum('cash', 'credit_card', 'debit_card', name='payment_method_enum'), default='cash')
 
     # Relationships
     rental = relationship("Rental", back_populates="payments")
@@ -120,32 +148,4 @@ class LateFee(Base):
 
     def __repr__(self):
         return f"<LateFee {self.id}>"
-    
-
-class Category(Base):
-    __tablename__ = 'categories'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(50), unique=True, nullable=False)
-
-    # Relationships
-    movies = relationship("Movie", secondary=movie_categories, back_populates="categories")
-
-    def __repr__(self):
-        return f"<Category {self.name}>"
-    
-
-class Staff(Base):
-    __tablename__ = 'staffs'
-    
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True, nullable=False)
-    phone = Column(String(20))
-    password_hash = Column(String(255), nullable=False)
-    created_at = Column(DateTime, default=datetime.now)
-    last_login = Column(DateTime)
-
-    def __repr__(self):
-        return f"<Staff {self.username}>"
     
