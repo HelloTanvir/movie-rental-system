@@ -1,5 +1,5 @@
 import tkinter as tk
-from app import MainApplication
+from app import MainApp
 from config import engine, Session
 from models import Base
 
@@ -17,7 +17,8 @@ def main():
     session = Session()
 
     root = tk.Tk()
-    MainApplication(root, session)
+    app = MainApp(root, session)
+    app.start()
     root.mainloop()
 
     session.close()

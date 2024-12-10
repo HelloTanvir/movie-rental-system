@@ -5,107 +5,95 @@ from datetime import datetime
 import bcrypt
 import re
 
-class AuthenticationFrame:
-    def __init__(self, root, session, login_callback):
+class AuthenticationApp:
+    def __init__(self, root, session, get_main_frame, login_callback):
         self.root = root
-        self.root.geometry("400x500")
-        self.root.resizable(False, False)
-
         self.session = session
-
+        self.get_main_frame = get_main_frame
         self.login_callback = login_callback
-        
-        self.create_login_frame()
-    
-    def create_login_frame(self):
+            
+    def show_login_frame(self):
         self.root.title("Movie Rental System - Staff Login")
 
-        # Main Frame
-        self.main_frame = ttk.Frame(self.root, padding="20")
-        self.main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        main_frame = self.get_main_frame()
         
         # Title
-        title_label = ttk.Label(self.main_frame, text="Movie Rental System", 
+        title_label = ttk.Label(main_frame, text="Movie Rental System", 
                               font=('Helvetica', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=20)
         
         # Username
-        ttk.Label(self.main_frame, text="Username:").grid(row=1, column=0, 
+        ttk.Label(main_frame, text="Username:").grid(row=1, column=0, 
                                                          sticky=tk.W, pady=5)
         self.username_var = tk.StringVar()
-        self.username_entry = ttk.Entry(self.main_frame, textvariable=self.username_var)
+        self.username_entry = ttk.Entry(main_frame, textvariable=self.username_var)
         self.username_entry.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Password
-        ttk.Label(self.main_frame, text="Password:").grid(row=3, column=0, 
+        ttk.Label(main_frame, text="Password:").grid(row=3, column=0, 
                                                          sticky=tk.W, pady=5)
         self.password_var = tk.StringVar()
-        self.password_entry = ttk.Entry(self.main_frame, textvariable=self.password_var, 
+        self.password_entry = ttk.Entry(main_frame, textvariable=self.password_var, 
                                       show="*")
         self.password_entry.grid(row=4, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Login Button
-        login_btn = ttk.Button(self.main_frame, text="Login", command=self.login)
+        login_btn = ttk.Button(main_frame, text="Login", command=self.login)
         login_btn.grid(row=5, column=0, columnspan=2, pady=20)
         
         # Register Link
-        register_link = ttk.Button(self.main_frame, text="Register New Staff", 
+        register_link = ttk.Button(main_frame, text="Register New Staff", 
                                  command=self.show_register_frame)
         register_link.grid(row=6, column=0, columnspan=2, pady=5)
         
         # Configure grid weights
-        self.main_frame.columnconfigure(0, weight=1)
+        main_frame.columnconfigure(0, weight=1)
         
-    def create_register_frame(self):
+    def show_register_frame(self):
         self.root.title("Movie Rental System - Register New Staff")
 
-        # Clear main frame
-        for widget in self.main_frame.winfo_children():
-            widget.destroy()
+        main_frame = self.get_main_frame()
         
         # Title
-        title_label = ttk.Label(self.main_frame, text="Register New Staff", 
+        title_label = ttk.Label(main_frame, text="Register New Staff", 
                               font=('Helvetica', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=20)
         
         # Username
-        ttk.Label(self.main_frame, text="Username:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        ttk.Label(main_frame, text="Username:").grid(row=1, column=0, sticky=tk.W, pady=5)
         self.reg_username_var = tk.StringVar()
-        self.reg_username_entry = ttk.Entry(self.main_frame, textvariable=self.reg_username_var)
+        self.reg_username_entry = ttk.Entry(main_frame, textvariable=self.reg_username_var)
         self.reg_username_entry.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Email
-        ttk.Label(self.main_frame, text="Email:").grid(row=3, column=0, sticky=tk.W, pady=5)
+        ttk.Label(main_frame, text="Email:").grid(row=3, column=0, sticky=tk.W, pady=5)
         self.reg_email_var = tk.StringVar()
-        self.reg_email_entry = ttk.Entry(self.main_frame, textvariable=self.reg_email_var)
+        self.reg_email_entry = ttk.Entry(main_frame, textvariable=self.reg_email_var)
         self.reg_email_entry.grid(row=4, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Password
-        ttk.Label(self.main_frame, text="Password:").grid(row=5, column=0, sticky=tk.W, pady=5)
+        ttk.Label(main_frame, text="Password:").grid(row=5, column=0, sticky=tk.W, pady=5)
         self.reg_password_var = tk.StringVar()
-        self.reg_password_entry = ttk.Entry(self.main_frame, textvariable=self.reg_password_var, 
+        self.reg_password_entry = ttk.Entry(main_frame, textvariable=self.reg_password_var, 
                                           show="*")
         self.reg_password_entry.grid(row=6, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Confirm Password
-        ttk.Label(self.main_frame, text="Confirm Password:").grid(row=7, column=0, 
+        ttk.Label(main_frame, text="Confirm Password:").grid(row=7, column=0, 
                                                                  sticky=tk.W, pady=5)
         self.reg_confirm_var = tk.StringVar()
-        self.reg_confirm_entry = ttk.Entry(self.main_frame, textvariable=self.reg_confirm_var, 
+        self.reg_confirm_entry = ttk.Entry(main_frame, textvariable=self.reg_confirm_var, 
                                          show="*")
         self.reg_confirm_entry.grid(row=8, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Register Button
-        register_btn = ttk.Button(self.main_frame, text="Register", command=self.register)
+        register_btn = ttk.Button(main_frame, text="Register", command=self.register)
         register_btn.grid(row=9, column=0, columnspan=2, pady=20)
         
         # Back to Login Link
-        back_link = ttk.Button(self.main_frame, text="Back to Login", 
-                             command=self.create_login_frame)
+        back_link = ttk.Button(main_frame, text="Back to Login", 
+                             command=self.show_login_frame)
         back_link.grid(row=10, column=0, columnspan=2, pady=5)
-    
-    def show_register_frame(self):
-        self.create_register_frame()
     
     def validate_email(self, email):
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
@@ -164,7 +152,7 @@ class AuthenticationFrame:
             self.session.add(new_staff)
             self.session.commit()
             messagebox.showinfo("Success", "Registration successful! Please login.")
-            self.create_login_frame()
+            self.show_login_frame()
         except Exception as e:
             self.session.rollback()
             messagebox.showerror("Error", f"Registration failed: {str(e)}")
