@@ -149,7 +149,7 @@ class MovieApp:
         # Title
         title_label = ttk.Label(content_frame, text="Movie List",
                                 font=('Helvetica', 16, 'bold'))
-        title_label.grid(row=0, column=0, columnspan=2)
+        title_label.grid(row=0, column=0, columnspan=3)
 
         if movies:
             # Table
@@ -201,13 +201,20 @@ class MovieApp:
         self.selected_movie = self.session.query(Movie).get(values[0])
 
         if self.selected_movie:
+            buttons_frame = ttk.Frame(content_frame)
+            buttons_frame.grid(row=3, column=0, columnspan=3, pady=10)
+
             # Delete Button
-            delete_button = ttk.Button(content_frame, text="Delete", command=self.delete_movie)
+            delete_button = ttk.Button(buttons_frame, text="Delete", command=self.delete_movie)
             delete_button.grid(row=3, column=0, pady=10)
 
             # Update Button
-            update_button = ttk.Button(content_frame, text="Update", command=self.show_update_frame)
+            update_button = ttk.Button(buttons_frame, text="Update", command=self.show_update_frame)
             update_button.grid(row=3, column=1, pady=10)
+
+            # Rent Button
+            rent_button = ttk.Button(buttons_frame, text="Rent", command=self.rent_movie)
+            rent_button.grid(row=3, column=2, pady=10)
 
     def delete_movie(self):
         if messagebox.askyesno("Delete Movie", "Are you sure you want to delete this movie?"):
@@ -347,4 +354,7 @@ class MovieApp:
         except Exception as e:
             self.session.rollback()
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
+
+    def rent_movie(self):
+        pass
 

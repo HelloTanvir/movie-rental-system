@@ -153,13 +153,16 @@ class CustomerApp:
         self.selected_customer = self.session.query(Customer).get(values[0])
 
         if self.selected_customer:
+            buttons_frame = ttk.Frame(content_frame)
+            buttons_frame.grid(row=2, column=0, columnspan=2, pady=10)
+
             # Delete Button
-            delete_button = ttk.Button(content_frame, text="Delete", command=self.delete_customer)
-            delete_button.grid(row=3, column=0, pady=10)
+            delete_button = ttk.Button(buttons_frame, text="Delete", command=self.delete_customer)
+            delete_button.grid(row=2, column=0, pady=10)
 
             # Update Button
-            update_button = ttk.Button(content_frame, text="Update", command=self.show_update_frame)
-            update_button.grid(row=3, column=1, pady=10)
+            update_button = ttk.Button(buttons_frame, text="Update", command=self.show_update_frame)
+            update_button.grid(row=2, column=1, pady=10)
 
     def delete_customer(self):
         if messagebox.askyesno("Delete Customer", "Are you sure you want to delete this customer?"):
