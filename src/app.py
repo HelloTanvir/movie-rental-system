@@ -134,15 +134,6 @@ class MainApp:
         rental_menu.add_command(label="Create Rental", command=self.rental_app.show_create_frame)
         rental_menu.add_separator()
         rental_menu.add_command(label="Show Rentals", command=self.rental_app.show_list_frame)
-        
-        # Reports Menu
-        reports_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="Reports", menu=reports_menu)
-        reports_menu.add_command(label="Revenue Report")
-        reports_menu.add_separator()
-        reports_menu.add_command(label="Popular Movies")
-        reports_menu.add_separator()
-        reports_menu.add_command(label="Late Returns")
 
     def logout(self):
         if messagebox.askyesno("Logout", "Are you sure you want to logout?"):
