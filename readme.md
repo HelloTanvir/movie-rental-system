@@ -1,4 +1,4 @@
-# Movie Rental System
+# Rent a Movie
 
 A Python-based movie rental management system that helps you manage your movie inventory and rental operations.
 

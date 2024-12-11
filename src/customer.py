@@ -12,7 +12,7 @@ class CustomerApp:
         self.selected_customer = None
     
     def show_create_frame(self):
-        self.root.title("Movie Rental System - Customer Registration")
+        self.root.title("Rent a Movie - Customer Registration")
 
         content_frame = self.create_scrollable_screen()
         content_frame.configure(padding=(70, 50))
@@ -94,7 +94,7 @@ class CustomerApp:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
         
     def show_list_frame(self):
-        self.root.title("Movie Rental System - Customer List")
+        self.root.title("Rent a Movie - Customer List")
 
         content_frame = self.create_scrollable_screen()
         content_frame.configure(padding=(30, 60))
@@ -176,7 +176,7 @@ class CustomerApp:
                 messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
     def show_update_frame(self):
-        self.root.title("Movie Rental System - Update Customer")
+        self.root.title("Rent a Movie - Update Customer")
 
         content_frame = self.create_scrollable_screen()
         content_frame.configure(padding=(70, 50))

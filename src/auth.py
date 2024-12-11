@@ -13,15 +13,15 @@ class AuthenticationApp:
         self.login_callback = login_callback
             
     def show_login_frame(self):
-        self.root.title("Movie Rental System - Staff Login")
+        self.root.title("Rent a Movie - Staff Login")
 
         content_frame = self.create_scrollable_screen()
-        content_frame.configure(padding=(80, 50))
+        content_frame.configure(padding=(100, 50))
         
         # Title
-        title_label = ttk.Label(content_frame, text="Movie Rental System", 
+        title_label = ttk.Label(content_frame, text="Rent a Movie", 
                               font=('Helvetica', 16, 'bold'))
-        title_label.grid(row=0, column=0, columnspan=2, pady=20)
+        title_label.grid(row=0, column=0, columnspan=2, pady=20, padx=20)
         
         # Username
         ttk.Label(content_frame, text="Username:").grid(row=1, column=0, 
@@ -51,7 +51,7 @@ class AuthenticationApp:
         content_frame.columnconfigure(0, weight=1)
         
     def show_register_frame(self):
-        self.root.title("Movie Rental System - Register New Staff")
+        self.root.title("Rent a Movie - Register New Staff")
 
         content_frame = self.create_scrollable_screen()
         content_frame.configure(padding=(80, 40))

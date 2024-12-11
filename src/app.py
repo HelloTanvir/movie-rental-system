@@ -4,11 +4,12 @@ from auth import AuthenticationApp
 from customer import CustomerApp
 from models import Staff
 from movie import MovieApp
+from rental import RentalApp
 
 class MainApp:
     def __init__(self, root, session):
         self.root = root
-        self.root.title("Movie Rental System")
+        self.root.title("Rent a Movie")
         self.root.geometry("400x500")
         self.root.resizable(False, False)
         
@@ -25,6 +26,7 @@ class MainApp:
         self.auth_app = AuthenticationApp(self.root, self.session, self.create_scrollable_screen, self.on_login_success)
         self.customer_app = CustomerApp(self.root, self.session, self.create_scrollable_screen)
         self.movie_app = MovieApp(self.root, self.session, self.create_scrollable_screen)
+        self.rental_app = RentalApp(self.root, self.session, self.create_scrollable_screen)
 
     def start(self):
         self.auth_app.show_login_frame()
@@ -125,6 +127,13 @@ class MainApp:
         movie_menu.add_command(label="Create Movie", command=self.movie_app.show_create_frame)
         movie_menu.add_separator()
         movie_menu.add_command(label="Show Movies", command=self.movie_app.show_list_frame)
+
+        # Rental Menu
+        rental_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Rental", menu=rental_menu)
+        rental_menu.add_command(label="Create Rental", command=self.rental_app.show_create_frame)
+        rental_menu.add_separator()
+        rental_menu.add_command(label="Show Rentals", command=self.rental_app.show_list_frame)
         
         # Reports Menu
         reports_menu = tk.Menu(menubar, tearoff=0)
@@ -147,7 +156,7 @@ class MainApp:
     def show_dashboard(self, staff_member: Staff):
         self.staff_member = staff_member
 
-        self.root.title("Movie Rental System - Dashboard")
+        self.root.title("Rent a Movie - Dashboard")
 
         content_frame = self.create_scrollable_screen()
         content_frame.configure(padding=(80, 60))
@@ -158,7 +167,7 @@ class MainApp:
         title_label.grid(row=0, column=0, columnspan=2, pady=20)
         
         # Welcome message
-        welcome_label = ttk.Label(content_frame, text="Welcome to the Movie Rental System!")
+        welcome_label = ttk.Label(content_frame, text="Welcome to the Rent a Movie!")
         welcome_label.grid(row=1, column=0, columnspan=2, pady=5)
         
         # Display staff member name

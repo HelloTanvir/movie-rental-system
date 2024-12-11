@@ -12,10 +12,10 @@ class MovieApp:
         self.selected_movie = None
     
     def show_create_frame(self):
-        self.root.title("Movie Rental System - Movie Creation")
+        self.root.title("Rent a Movie - Movie Creation")
 
         content_frame = self.create_scrollable_screen()
-        content_frame.configure(padding=(20, 20))
+        content_frame.configure(padding=(30, 20))
 
         # Title
         title_label = ttk.Label(content_frame, text="Create Movie",
@@ -28,13 +28,6 @@ class MovieApp:
 
         name_entry = ttk.Entry(content_frame, width=30)
         name_entry.grid(row=1, column=1, sticky='w', pady=5)
-
-        # Description
-        description_label = ttk.Label(content_frame, text="Description:")
-        description_label.grid(row=2, column=0, sticky=tk.W, pady=5)
-
-        description_entry = tk.Text(content_frame, width=30, height=5)
-        description_entry.grid(row=2, column=1, sticky='w', pady=5)
 
         # Release Year
         release_year_label = ttk.Label(content_frame, text="Release Year:")
@@ -78,13 +71,6 @@ class MovieApp:
         director_entry = ttk.Entry(content_frame, width=30)
         director_entry.grid(row=8, column=1, sticky='w', pady=5)
 
-        # Image
-        image_label = ttk.Label(content_frame, text="Image:")
-        image_label.grid(row=9, column=0, sticky=tk.W, pady=5)
-
-        image_entry = ttk.Entry(content_frame, width=30)
-        image_entry.grid(row=9, column=1, sticky='w', pady=5)
-
         # Total Copies
         total_copies_label = ttk.Label(content_frame, text="Total Copies:")
         total_copies_label.grid(row=10, column=0, sticky=tk.W, pady=5)
@@ -94,14 +80,12 @@ class MovieApp:
 
         form_inputs = {
             "name": name_entry,
-            "description": description_entry,
             "release_year": release_year_entry,
             "rental_rate": rental_rate_entry,
             "duration": duration_entry,
             "genre": genre_entry,
             "rating": rating_entry,
             "director": director_entry,
-            "image": image_entry,
             "total_copies": total_copies_entry,
         }
 
@@ -112,14 +96,12 @@ class MovieApp:
     def create_movie(self, form_inputs):
         movie = Movie(
             name=form_inputs["name"].get(),
-            description=form_inputs["description"].get("1.0", tk.END),
             release_year=form_inputs["release_year"].get(),
             rental_rate=form_inputs["rental_rate"].get(),
             duration_mins=form_inputs["duration"].get(),
             genre=form_inputs["genre"].get(),
             rating=form_inputs["rating"].get(),
             director=form_inputs["director"].get(),
-            image=form_inputs["image"].get(),
             total_copies=form_inputs["total_copies"].get(),
             available_copies=form_inputs["total_copies"].get() # initially all copies are available
         )
@@ -136,10 +118,10 @@ class MovieApp:
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
         
     def show_list_frame(self):
-        self.root.title("Movie Rental System - Movie List")
+        self.root.title("Rent a Movie - Movie List")
 
         content_frame = self.create_scrollable_screen()
-        content_frame.configure(padding=(30, 60))
+        content_frame.configure(padding=(75, 100))
 
         # override the geometry of the root window
         self.root.geometry("800x600")
@@ -165,7 +147,7 @@ class MovieApp:
 
             # set column widths
             tree.column("ID", width=50)
-            tree.column("Title", width=200)
+            tree.column("Title", width=120)
             tree.column("Release Year", width=100)
             tree.column("Genre", width=100)
             tree.column("Director", width=100)
@@ -212,10 +194,6 @@ class MovieApp:
             update_button = ttk.Button(buttons_frame, text="Update", command=self.show_update_frame)
             update_button.grid(row=3, column=1, pady=10)
 
-            # Rent Button
-            rent_button = ttk.Button(buttons_frame, text="Rent", command=self.rent_movie)
-            rent_button.grid(row=3, column=2, pady=10)
-
     def delete_movie(self):
         if messagebox.askyesno("Delete Movie", "Are you sure you want to delete this movie?"):
             try:
@@ -228,7 +206,7 @@ class MovieApp:
                 messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
     def show_update_frame(self):
-        self.root.title("Movie Rental System - Update Movie")
+        self.root.title("Rent a Movie - Update Movie")
 
         content_frame = self.create_scrollable_screen()
         content_frame.configure(padding=(20, 20))
@@ -245,14 +223,6 @@ class MovieApp:
         name_entry = ttk.Entry(content_frame, width=30)
         name_entry.insert(0, self.selected_movie.name)
         name_entry.grid(row=1, column=1, sticky='w', pady=5)
-
-        # Description
-        description_label = ttk.Label(content_frame, text="Description:")
-        description_label.grid(row=2, column=0, sticky=tk.W, pady=5)
-
-        description_entry = tk.Text(content_frame, width=30, height=5)
-        description_entry.insert(tk.END, self.selected_movie.description)
-        description_entry.grid(row=2, column=1, sticky='w', pady=5)
 
         # Release Year
         release_year_label = ttk.Label(content_frame, text="Release Year:")
@@ -302,14 +272,6 @@ class MovieApp:
         director_entry.insert(0, self.selected_movie.director)
         director_entry.grid(row=8, column=1, sticky='w', pady=5)
 
-        # Image
-        image_label = ttk.Label(content_frame, text="Image:")
-        image_label.grid(row=9, column=0, sticky=tk.W, pady=5)
-
-        image_entry = ttk.Entry(content_frame, width=30)
-        image_entry.insert(0, self.selected_movie.image)
-        image_entry.grid(row=9, column=1, sticky='w', pady=5)
-
         # Total Copies
         total_copies_label = ttk.Label(content_frame, text="Total Copies:")
         total_copies_label.grid(row=10, column=0, sticky=tk.W, pady=5)
@@ -320,14 +282,12 @@ class MovieApp:
 
         form_inputs = {
             "name": name_entry,
-            "description": description_entry,
             "release_year": release_year_entry,
             "rental_rate": rental_rate_entry,
             "duration": duration_entry,
             "genre": genre_entry,
             "rating": rating_entry,
             "director": director_entry,
-            "image": image_entry,
             "total_copies": total_copies_entry,
         }
 
@@ -337,14 +297,12 @@ class MovieApp:
 
     def update_movie(self, form_inputs):
         self.selected_movie.name = form_inputs["name"].get()
-        self.selected_movie.description = form_inputs["description"].get("1.0", tk.END)
         self.selected_movie.release_year = form_inputs["release_year"].get()
         self.selected_movie.rental_rate = form_inputs["rental_rate"].get()
         self.selected_movie.duration_mins = form_inputs["duration"].get()
         self.selected_movie.genre = form_inputs["genre"].get()
         self.selected_movie.rating = form_inputs["rating"].get()
         self.selected_movie.director = form_inputs["director"].get()
-        self.selected_movie.image = form_inputs["image"].get()
         self.selected_movie.total_copies = form_inputs["total_copies"].get()
 
         try:
@@ -354,7 +312,4 @@ class MovieApp:
         except Exception as e:
             self.session.rollback()
             messagebox.showerror("Error", f"An error occurred: {str(e)}")
-
-    def rent_movie(self):
-        pass
 
