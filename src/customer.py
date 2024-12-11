@@ -5,55 +5,56 @@ from tkinter import messagebox
 from models import Customer
 
 class CustomerApp:
-    def __init__(self, root, session, get_main_frame):
+    def __init__(self, root, session, create_scrollable_screen):
         self.root = root
         self.session = session
-        self.get_main_frame = get_main_frame
+        self.create_scrollable_screen = create_scrollable_screen
         self.selected_customer = None
     
     def show_create_frame(self):
         self.root.title("Movie Rental System - Customer Registration")
 
-        main_frame = self.get_main_frame()
+        content_frame = self.create_scrollable_screen()
+        content_frame.configure(padding=(70, 50))
 
         # Title
-        title_label = ttk.Label(main_frame, text="Customer Registration",
+        title_label = ttk.Label(content_frame, text="Customer Registration",
                                 font=('Helvetica', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=20)
 
         # First Name
-        first_name_label = ttk.Label(main_frame, text="First Name:")
+        first_name_label = ttk.Label(content_frame, text="First Name:")
         first_name_label.grid(row=1, column=0, sticky='w', pady=5)
 
-        first_name_entry = ttk.Entry(main_frame, width=30)
+        first_name_entry = ttk.Entry(content_frame, width=30)
         first_name_entry.grid(row=1, column=1, sticky='w')
 
         # Last Name
-        last_name_label = ttk.Label(main_frame, text="Last Name:")
+        last_name_label = ttk.Label(content_frame, text="Last Name:")
         last_name_label.grid(row=2, column=0, sticky='w', pady=5)
 
-        last_name_entry = ttk.Entry(main_frame, width=30)
+        last_name_entry = ttk.Entry(content_frame, width=30)
         last_name_entry.grid(row=2, column=1, sticky='w')
 
         # Email
-        email_label = ttk.Label(main_frame, text="Email:")
+        email_label = ttk.Label(content_frame, text="Email:")
         email_label.grid(row=3, column=0, sticky='w', pady=5)
 
-        email_entry = ttk.Entry(main_frame, width=30)
+        email_entry = ttk.Entry(content_frame, width=30)
         email_entry.grid(row=3, column=1, sticky='w')
 
         # Phone
-        phone_label = ttk.Label(main_frame, text="Phone:")
+        phone_label = ttk.Label(content_frame, text="Phone:")
         phone_label.grid(row=4, column=0, sticky='w', pady=5)
 
-        phone_entry = ttk.Entry(main_frame, width=30)
+        phone_entry = ttk.Entry(content_frame, width=30)
         phone_entry.grid(row=4, column=1, sticky='w')
 
         # Address
-        address_label = ttk.Label(main_frame, text="Address:")
+        address_label = ttk.Label(content_frame, text="Address:")
         address_label.grid(row=5, column=0, sticky='w', pady=5)
 
-        address_entry = tk.Entry(main_frame, width=30)
+        address_entry = tk.Entry(content_frame, width=30)
         address_entry.grid(row=5, column=1, sticky='w')
 
         form_inputs = {
@@ -65,7 +66,7 @@ class CustomerApp:
         }
 
         # Submit Button
-        submit_button = ttk.Button(main_frame, text="Register Customer", command=lambda: self.register_customer(form_inputs))
+        submit_button = ttk.Button(content_frame, text="Register Customer", command=lambda: self.register_customer(form_inputs))
         submit_button.grid(row=6, column=0, columnspan=2, pady=20)
 
     def register_customer(self, form_inputs):
@@ -95,7 +96,8 @@ class CustomerApp:
     def show_list_frame(self):
         self.root.title("Movie Rental System - Customer List")
 
-        main_frame = self.get_main_frame()
+        content_frame = self.create_scrollable_screen()
+        content_frame.configure(padding=(30, 60))
 
         # override the geometry of the root window
         self.root.geometry("800x600")
@@ -103,21 +105,21 @@ class CustomerApp:
         customers = self.session.query(Customer).all()
 
         # Title
-        title_label = ttk.Label(main_frame, text="Customer List",
+        title_label = ttk.Label(content_frame, text="Customer List",
                                 font=('Helvetica', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=20)
 
         if customers:
             # Table
             columns = ("ID", "Name", "Email", "Phone", "Address")
-            tree = ttk.Treeview(main_frame, columns=columns, show="headings")
+            tree = ttk.Treeview(content_frame, columns=columns, show="headings")
             for col in columns:
                 tree.heading(col, text=col.capitalize())
-            tree.bind("<<TreeviewSelect>>", lambda event: self.on_tree_select(event, main_frame))
+            tree.bind("<<TreeviewSelect>>", lambda event: self.on_tree_select(event, content_frame))
             tree.grid(row=1, column=0, columnspan=3, padx=10, pady=10)
 
             # tree should not overflow the frame
-            main_frame.columnconfigure(0, weight=1)
+            content_frame.columnconfigure(0, weight=1)
 
             # set column widths
             tree.column("ID", width=50)
@@ -136,27 +138,27 @@ class CustomerApp:
                 ))
 
             # Scrollbar
-            vertical_scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=tree.yview)
+            vertical_scrollbar = ttk.Scrollbar(content_frame, orient="vertical", command=tree.yview)
             vertical_scrollbar.grid(row=1, column=2, sticky='ns')
-            horizontal_scrollbar = ttk.Scrollbar(main_frame, orient="horizontal", command=tree.xview)
+            horizontal_scrollbar = ttk.Scrollbar(content_frame, orient="horizontal", command=tree.xview)
             horizontal_scrollbar.grid(row=2, column=0, columnspan=2, sticky='ew')
             tree.configure(yscrollcommand=vertical_scrollbar.set, xscrollcommand=horizontal_scrollbar.set)
         else:
-            no_customers_label = ttk.Label(main_frame, text="No customers found", padding=10)
+            no_customers_label = ttk.Label(content_frame, text="No customers found", padding=10)
             no_customers_label.grid(row=1, column=0, columnspan=2, pady=10)
 
-    def on_tree_select(self, event, main_frame):
+    def on_tree_select(self, event, content_frame):
         selected_item = event.widget.selection()[0]
         values = event.widget.item(selected_item, "values")
         self.selected_customer = self.session.query(Customer).get(values[0])
 
         if self.selected_customer:
             # Delete Button
-            delete_button = ttk.Button(main_frame, text="Delete", command=self.delete_customer)
+            delete_button = ttk.Button(content_frame, text="Delete", command=self.delete_customer)
             delete_button.grid(row=3, column=0, pady=10)
 
             # Update Button
-            update_button = ttk.Button(main_frame, text="Update", command=self.show_update_frame)
+            update_button = ttk.Button(content_frame, text="Update", command=self.show_update_frame)
             update_button.grid(row=3, column=1, pady=10)
 
     def delete_customer(self):
@@ -173,50 +175,51 @@ class CustomerApp:
     def show_update_frame(self):
         self.root.title("Movie Rental System - Update Customer")
 
-        main_frame = self.get_main_frame()
+        content_frame = self.create_scrollable_screen()
+        content_frame.configure(padding=(70, 50))
 
         # Title
-        title_label = ttk.Label(main_frame, text="Update Customer",
+        title_label = ttk.Label(content_frame, text="Update Customer",
                                 font=('Helvetica', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=20)
 
         # First Name
-        first_name_label = ttk.Label(main_frame, text="First Name:")
+        first_name_label = ttk.Label(content_frame, text="First Name:")
         first_name_label.grid(row=1, column=0, sticky='w', pady=5)
 
-        first_name_entry = ttk.Entry(main_frame, width=30)
+        first_name_entry = ttk.Entry(content_frame, width=30)
         first_name_entry.insert(0, self.selected_customer.first_name)
         first_name_entry.grid(row=1, column=1, sticky='w')
 
         # Last Name
-        last_name_label = ttk.Label(main_frame, text="Last Name:")
+        last_name_label = ttk.Label(content_frame, text="Last Name:")
         last_name_label.grid(row=2, column=0, sticky='w', pady=5)
 
-        last_name_entry = ttk.Entry(main_frame, width=30)
+        last_name_entry = ttk.Entry(content_frame, width=30)
         last_name_entry.insert(0, self.selected_customer.last_name)
         last_name_entry.grid(row=2, column=1, sticky='w')
 
         # Email
-        email_label = ttk.Label(main_frame, text="Email:")
+        email_label = ttk.Label(content_frame, text="Email:")
         email_label.grid(row=3, column=0, sticky='w', pady=5)
 
-        email_entry = ttk.Entry(main_frame, width=30)
+        email_entry = ttk.Entry(content_frame, width=30)
         email_entry.insert(0, self.selected_customer.email)
         email_entry.grid(row=3, column=1, sticky='w')
 
         # Phone
-        phone_label = ttk.Label(main_frame, text="Phone:")
+        phone_label = ttk.Label(content_frame, text="Phone:")
         phone_label.grid(row=4, column=0, sticky='w', pady=5)
 
-        phone_entry = ttk.Entry(main_frame, width=30)
+        phone_entry = ttk.Entry(content_frame, width=30)
         phone_entry.insert(0, self.selected_customer.phone)
         phone_entry.grid(row=4, column=1, sticky='w')
 
         # Address
-        address_label = ttk.Label(main_frame, text="Address:")
+        address_label = ttk.Label(content_frame, text="Address:")
         address_label.grid(row=5, column=0, sticky='w', pady=5)
 
-        address_entry = tk.Entry(main_frame, width=30)
+        address_entry = tk.Entry(content_frame, width=30)
         address_entry.insert(0, self.selected_customer.address)
         address_entry.grid(row=5, column=1, sticky='w')
 
@@ -229,7 +232,7 @@ class CustomerApp:
         }
 
         # Submit Button
-        submit_button = ttk.Button(main_frame, text="Update Customer", command=lambda: self.update_customer(form_inputs))
+        submit_button = ttk.Button(content_frame, text="Update Customer", command=lambda: self.update_customer(form_inputs))
         submit_button.grid(row=6, column=0, columnspan=2, pady=20)
 
     def update_customer(self, form_inputs):

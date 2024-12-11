@@ -1,16 +1,9 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Float, Table, Index, Enum, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text, Float, Index, Enum, Boolean
 from sqlalchemy.orm import relationship, declarative_base
 
 
 Base = declarative_base()
-
-movie_categories = Table(
-    'movie_categories',
-    Base.metadata,
-    Column('movie_id', Integer, ForeignKey('movies.id'), primary_key=True),
-    Column('category_id', Integer, ForeignKey('categories.id'), primary_key=True)
-)
 
 
 class Staff(Base):
@@ -50,7 +43,7 @@ class Movie(Base):
     __tablename__ = 'movies'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(String(100), nullable=False)
+    name = Column(String(100), nullable=False)
     description = Column(Text)
     release_year = Column(Integer)
     rental_rate = Column(Float, nullable=False)
@@ -66,26 +59,12 @@ class Movie(Base):
 
     # Relationships
     rentals = relationship("Rental", back_populates="movie")
-    categories = relationship("Category", secondary=movie_categories, back_populates="movies")
 
     # Indexes
-    __table_args__ = (Index('idx_movie_title', 'title'),)
+    __table_args__ = (Index('idx_movie_name', 'name'),)
 
     def __repr__(self):
-        return f"<Movie {self.title}>"
-
-
-class Category(Base):
-    __tablename__ = 'categories'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(50), unique=True, nullable=False)
-
-    # Relationships
-    movies = relationship("Movie", secondary=movie_categories, back_populates="categories")
-
-    def __repr__(self):
-        return f"<Category {self.name}>"
+        return f"<Movie {self.name}>"
 
 
 class Rental(Base):

@@ -6,92 +6,94 @@ import bcrypt
 import re
 
 class AuthenticationApp:
-    def __init__(self, root, session, get_main_frame, login_callback):
+    def __init__(self, root, session, create_scrollable_screen, login_callback):
         self.root = root
         self.session = session
-        self.get_main_frame = get_main_frame
+        self.create_scrollable_screen = create_scrollable_screen
         self.login_callback = login_callback
             
     def show_login_frame(self):
         self.root.title("Movie Rental System - Staff Login")
 
-        main_frame = self.get_main_frame()
+        content_frame = self.create_scrollable_screen()
+        content_frame.configure(padding=(80, 50))
         
         # Title
-        title_label = ttk.Label(main_frame, text="Movie Rental System", 
+        title_label = ttk.Label(content_frame, text="Movie Rental System", 
                               font=('Helvetica', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=20)
         
         # Username
-        ttk.Label(main_frame, text="Username:").grid(row=1, column=0, 
+        ttk.Label(content_frame, text="Username:").grid(row=1, column=0, 
                                                          sticky=tk.W, pady=5)
         self.username_var = tk.StringVar()
-        self.username_entry = ttk.Entry(main_frame, textvariable=self.username_var)
+        self.username_entry = ttk.Entry(content_frame, textvariable=self.username_var)
         self.username_entry.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Password
-        ttk.Label(main_frame, text="Password:").grid(row=3, column=0, 
+        ttk.Label(content_frame, text="Password:").grid(row=3, column=0, 
                                                          sticky=tk.W, pady=5)
         self.password_var = tk.StringVar()
-        self.password_entry = ttk.Entry(main_frame, textvariable=self.password_var, 
+        self.password_entry = ttk.Entry(content_frame, textvariable=self.password_var, 
                                       show="*")
         self.password_entry.grid(row=4, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Login Button
-        login_btn = ttk.Button(main_frame, text="Login", command=self.login)
+        login_btn = ttk.Button(content_frame, text="Login", command=self.login)
         login_btn.grid(row=5, column=0, columnspan=2, pady=20)
         
         # Register Link
-        register_link = ttk.Button(main_frame, text="Register New Staff", 
+        register_link = ttk.Button(content_frame, text="Register New Staff", 
                                  command=self.show_register_frame)
         register_link.grid(row=6, column=0, columnspan=2, pady=5)
         
         # Configure grid weights
-        main_frame.columnconfigure(0, weight=1)
+        content_frame.columnconfigure(0, weight=1)
         
     def show_register_frame(self):
         self.root.title("Movie Rental System - Register New Staff")
 
-        main_frame = self.get_main_frame()
+        content_frame = self.create_scrollable_screen()
+        content_frame.configure(padding=(80, 40))
         
         # Title
-        title_label = ttk.Label(main_frame, text="Register New Staff", 
+        title_label = ttk.Label(content_frame, text="Register New Staff", 
                               font=('Helvetica', 16, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=20)
         
         # Username
-        ttk.Label(main_frame, text="Username:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        ttk.Label(content_frame, text="Username:").grid(row=1, column=0, sticky=tk.W, pady=5)
         self.reg_username_var = tk.StringVar()
-        self.reg_username_entry = ttk.Entry(main_frame, textvariable=self.reg_username_var)
+        self.reg_username_entry = ttk.Entry(content_frame, textvariable=self.reg_username_var)
         self.reg_username_entry.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Email
-        ttk.Label(main_frame, text="Email:").grid(row=3, column=0, sticky=tk.W, pady=5)
+        ttk.Label(content_frame, text="Email:").grid(row=3, column=0, sticky=tk.W, pady=5)
         self.reg_email_var = tk.StringVar()
-        self.reg_email_entry = ttk.Entry(main_frame, textvariable=self.reg_email_var)
+        self.reg_email_entry = ttk.Entry(content_frame, textvariable=self.reg_email_var)
         self.reg_email_entry.grid(row=4, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Password
-        ttk.Label(main_frame, text="Password:").grid(row=5, column=0, sticky=tk.W, pady=5)
+        ttk.Label(content_frame, text="Password:").grid(row=5, column=0, sticky=tk.W, pady=5)
         self.reg_password_var = tk.StringVar()
-        self.reg_password_entry = ttk.Entry(main_frame, textvariable=self.reg_password_var, 
+        self.reg_password_entry = ttk.Entry(content_frame, textvariable=self.reg_password_var, 
                                           show="*")
         self.reg_password_entry.grid(row=6, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Confirm Password
-        ttk.Label(main_frame, text="Confirm Password:").grid(row=7, column=0, 
+        ttk.Label(content_frame, text="Confirm Password:").grid(row=7, column=0, 
                                                                  sticky=tk.W, pady=5)
         self.reg_confirm_var = tk.StringVar()
-        self.reg_confirm_entry = ttk.Entry(main_frame, textvariable=self.reg_confirm_var, 
+        self.reg_confirm_entry = ttk.Entry(content_frame, textvariable=self.reg_confirm_var, 
                                          show="*")
         self.reg_confirm_entry.grid(row=8, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=5)
         
         # Register Button
-        register_btn = ttk.Button(main_frame, text="Register", command=self.register)
+        register_btn = ttk.Button(content_frame, text="Register", command=self.register)
         register_btn.grid(row=9, column=0, columnspan=2, pady=20)
         
         # Back to Login Link
-        back_link = ttk.Button(main_frame, text="Back to Login", 
+        back_link = ttk.Button(content_frame, text="Back to Login", 
                              command=self.show_login_frame)
         back_link.grid(row=10, column=0, columnspan=2, pady=5)
     
