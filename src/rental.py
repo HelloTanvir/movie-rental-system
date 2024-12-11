@@ -96,7 +96,7 @@ class RentalApp:
             movie.available_copies -= 1
             self.session.add(rental)
             self.session.commit()            
-            messagebox.showinfo("Success", "Movie created successfully")
+            messagebox.showinfo("Success", "Rental created successfully")
             # clear form inputs
             for key in form_inputs:
                 form_inputs[key].delete(0, tk.END)
