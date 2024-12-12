@@ -2,7 +2,6 @@ import tkinter as tk
 from app import MainApp
 from config import engine, Session
 from models import Base
-from seeder import seed_database
 
 
 def main():
@@ -16,9 +15,6 @@ def main():
     Base.metadata.create_all(engine)
     
     session = Session()
-
-    # Seed database
-    # seed_database(session)
 
     root = tk.Tk()
     app = MainApp(root, session)
